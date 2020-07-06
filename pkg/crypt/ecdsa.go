@@ -33,9 +33,7 @@ var ecdsaCommand = &cobra.Command{
 }
 
 func init() {
-	rsaCommand.Flags().StringVarP(&ecdsaCurve, "curve", "c", "P-256", "Curve")
-
-	rootCommand.AddCommand(ecdsaCommand)
+	ecdsaCommand.Flags().StringVarP(&ecdsaCurve, "curve", "c", "P-256", "Curve")
 }
 
 var curvePattern = regexp.MustCompile("(?i)p-?(\\d+)")

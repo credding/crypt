@@ -2,17 +2,25 @@ package crypt
 
 import (
 	"github.com/spf13/cobra"
-	"os"
 )
 
 var rootCommand = &cobra.Command{
-	Use: "crypt",
+	Use:   "crypt",
 	Short: "Simple cryptography toolset",
 }
 
 func Execute() {
-	err := rootCommand.Execute()
-	if err != nil {
-		os.Exit(1)
-	}
+	_ = rootCommand.Execute()
+}
+
+func init() {
+	cobra.EnableCommandSorting = false
+	rootCommand.AddCommand(
+		rsaCommand,
+		ecdsaCommand,
+		csrCommand,
+		certCommand,
+		publicCommand,
+		randCommand,
+	)
 }

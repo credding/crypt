@@ -6,8 +6,22 @@ import (
 )
 
 var rootCommand = &cobra.Command{
-	Use: "jcrypt",
+	Use:   "jcrypt",
 	Short: "Simple JWE cryptography toolset",
+}
+
+func init() {
+	cobra.EnableCommandSorting = false
+	rootCommand.AddCommand(
+		jwksCommand,
+		publicCommand,
+		claimsCommand,
+		signCommand,
+		verifyCommand,
+		encryptCommand,
+		decryptCommand,
+		base64Command,
+	)
 }
 
 func Execute() {

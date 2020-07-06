@@ -10,7 +10,7 @@ import (
 
 var jwksCommand = &cobra.Command{
 	Use:   "jwks",
-	Short: "Generate a JWK set given a public or private key on stdin",
+	Short: "Generate a JWK set given a public, or private key on stdin",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		key, err := keyEncodings.Decode(os.Stdin)
 		if err != nil {
@@ -25,7 +25,7 @@ var jwksCommand = &cobra.Command{
 			if err != nil {
 				return err
 			}
-			keys = append(keys, jose.JSONWebKey{Key: key})
+			keys = append(keys, *key)
 		case *jose.JSONWebKeySet:
 			for _, key := range key.(*jose.JSONWebKeySet).Keys {
 				keys = append(keys, key)
@@ -38,10 +38,4 @@ var jwksCommand = &cobra.Command{
 
 		return json.NewEncoder(os.Stdout).Encode(&jose.JSONWebKeySet{Keys: keys})
 	},
-}
-
-func init() {
-	jwksCommand.Flags()
-
-	rootCommand.AddCommand(jwksCommand)
 }

@@ -5,7 +5,6 @@ import (
 	"crypto/ecdsa"
 	"crypto/rsa"
 	"crypto/x509"
-	"encoding/asn1"
 	"encoding/pem"
 	"fmt"
 	"io"
@@ -85,22 +84,14 @@ func EncodePEM(out io.Writer, data interface{}) error {
 			Bytes: encoded,
 		})
 	case *x509.Certificate:
-		encoded, err := asn1.Marshal(data)
-		if err != nil {
-			return err
-		}
 		return pem.Encode(out, &pem.Block{
 			Type:  "CERTIFICATE",
-			Bytes: encoded,
+			Bytes: data.(*x509.Certificate).Raw,
 		})
 	case *x509.CertificateRequest:
-		encoded, err := asn1.Marshal(data)
-		if err != nil {
-			return err
-		}
 		return pem.Encode(out, &pem.Block{
 			Type:  "CERTIFICATE REQUEST",
-			Bytes: encoded,
+			Bytes: data.(*x509.CertificateRequest).Raw,
 		})
 	default:
 		return fmt.Errorf("unsupported pem data type: %v", reflect.TypeOf(data))
@@ -120,19 +111,9 @@ func parsePEMBlock(block *pem.Block) (interface{}, error) {
 	case "EC PRIVATE KEY":
 		return x509.ParseECPrivateKey(block.Bytes)
 	case "CERTIFICATE":
-		cert := &x509.Certificate{}
-		_, err := asn1.Unmarshal(block.Bytes, cert)
-		if err != nil {
-			return nil, err
-		}
-		return cert, nil
+		return x509.ParseCertificate(block.Bytes)
 	case "CERTIFICATE REQUEST":
-		certReq := &x509.CertificateRequest{}
-		_, err := asn1.Unmarshal(block.Bytes, certReq)
-		if err != nil {
-			return nil, err
-		}
-		return certReq, nil
+		return x509.ParseCertificateRequest(block.Bytes)
 	default:
 		return nil, fmt.Errorf("unsupported pem block type: %s", block.Type)
 	}

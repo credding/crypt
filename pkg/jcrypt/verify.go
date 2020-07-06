@@ -16,7 +16,7 @@ var (
 
 var verifyCommand = &cobra.Command{
 	Use:   "verify [key]",
-	Short: "Generate a JWS given a payload on stdin",
+	Short: "Verity a JWS given on stdin",
 	Args:  cobra.MaximumNArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		compact, err := ioutil.ReadAll(os.Stdin)
@@ -50,9 +50,7 @@ var verifyCommand = &cobra.Command{
 }
 
 func init() {
+	verifyCommand.Flags().SortFlags = false
 	verifyCommand.Flags().VarP(verifyKey, "key", "k", "Key file")
 	verifyCommand.Flags().StringVar(&verifyKid, "kid", "", "Key ID")
-
-	rootCommand.AddCommand(verifyCommand)
 }
-

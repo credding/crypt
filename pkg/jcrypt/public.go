@@ -41,10 +41,6 @@ var publicCommand = &cobra.Command{
 	},
 }
 
-func init() {
-	rootCommand.AddCommand(publicCommand)
-}
-
 func getPublicJWKs(jwks *jose.JSONWebKeySet) *jose.JSONWebKeySet {
 	publicJWKs := make([]jose.JSONWebKey, len(jwks.Keys))
 	for i, jwk := range jwks.Keys {

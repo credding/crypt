@@ -14,7 +14,7 @@ import (
 
 var publicCommand = &cobra.Command{
 	Use:   "public",
-	Short: "Output the public key given a private key or certificate on stdin",
+	Short: "Output the public key given a private key, or certificate on stdin",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		key, err := encoding.DecodePEM(os.Stdin)
 		if err != nil {
@@ -27,10 +27,6 @@ var publicCommand = &cobra.Command{
 		}
 		return encoding.EncodePEM(os.Stdout, chain)
 	},
-}
-
-func init() {
-	rootCommand.AddCommand(publicCommand)
 }
 
 func getPublicPEMChain(chain encoding.PEMChain) (encoding.PEMChain, error) {

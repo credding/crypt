@@ -53,12 +53,11 @@ var encryptCommand = &cobra.Command{
 }
 
 func init() {
+	encryptCommand.Flags().SortFlags = false
 	encryptCommand.Flags().VarP(encryptKey, "key", "k", "Key file")
 	encryptCommand.Flags().StringVarP(&encryptAlg, "alg", "a", "", "Key algorithm (default auto)")
 	encryptCommand.Flags().StringVarP(&encryptEnc, "enc", "e", defaultContentEncryption, "Encryption algorithm")
 	encryptCommand.Flags().StringVar(&encryptKid, "kid", "", "Key ID")
-
-	rootCommand.AddCommand(encryptCommand)
 }
 
 func getEncryptingKey(keyFile *os.File, args []string, kid string) (*jose.JSONWebKey, error) {

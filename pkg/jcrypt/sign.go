@@ -49,11 +49,10 @@ var signCommand = &cobra.Command{
 }
 
 func init() {
+	signCommand.Flags().SortFlags = false
 	signCommand.Flags().VarP(signKey, "key", "k", "Key file")
 	signCommand.Flags().StringVarP(&signAlg, "alg", "a", "", "Signature algorithm (default auto)")
 	signCommand.Flags().StringVar(&signKid, "kid", "", "Key ID")
-
-	rootCommand.AddCommand(signCommand)
 }
 
 func getSigner(algArg string, key *jose.JSONWebKey) (jose.Signer, error) {
@@ -84,8 +83,8 @@ func defaultSignatureAlgorithm(key interface{}) jose.SignatureAlgorithm {
 			return jose.ES256
 		case "P-384":
 			return jose.ES384
-		case "P-512":
-			return jose.PS512
+		case "P-521":
+			return jose.ES512
 		}
 	case []byte:
 		return jose.HS256

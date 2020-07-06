@@ -60,6 +60,7 @@ var claimsCommand = &cobra.Command{
 
 func init() {
 	options := claimsCommand.Flags()
+	options.SortFlags = false
 	options.StringVarP(&claimsIss, "iss", "i", "", "Issuer")
 	options.StringVarP(&claimsSub, "sub", "s", "", "Subject")
 	options.StringSliceVarP(&claimsAud, "aud", "a", nil, "Audience")
@@ -72,6 +73,4 @@ func init() {
 	claimsCommand.Flag("exp").NoOptDefVal = "24h"
 	claimsCommand.Flag("nbf").NoOptDefVal = "0"
 	claimsCommand.Flag("iat").NoOptDefVal = "0"
-
-	rootCommand.AddCommand(claimsCommand)
 }

@@ -16,7 +16,7 @@ var (
 
 var decryptCommand = &cobra.Command{
 	Use:   "decrypt [key]",
-	Short: "Generate a JWE given a payload on stdin",
+	Short: "Decrypt a JWE given on stdin",
 	Args:  cobra.MaximumNArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		compact, err := ioutil.ReadAll(os.Stdin)
@@ -50,8 +50,7 @@ var decryptCommand = &cobra.Command{
 }
 
 func init() {
+	decryptCommand.Flags().SortFlags = false
 	decryptCommand.Flags().VarP(decryptKey, "key", "k", "Key file")
 	decryptCommand.Flags().StringVar(&decryptKid, "kid", "", "Key ID")
-
-	rootCommand.AddCommand(decryptCommand)
 }

@@ -43,7 +43,3 @@ func parseRandArgs(args []string) (int, error) {
 		}
 	return bytes, nil
 }
-
-func init() {
-	rootCommand.AddCommand(randCommand)
-}

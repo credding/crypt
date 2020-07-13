@@ -1,7 +1,6 @@
 package encoding
 
 import (
-	"bytes"
 	"crypto/ecdsa"
 	"crypto/rsa"
 	"crypto/x509"
@@ -35,24 +34,20 @@ func DecodePEM(in io.Reader) (PEMChain, error) {
 }
 
 func UnmarshalPEM(data []byte) (PEMChain, error) {
-	size := bytes.Count(data, []byte("-----BEGIN "))
-	if size == 0 {
-		return nil, fmt.Errorf("%w: expected pem", UnsupportedEncoding)
-	}
-
-	results := make(PEMChain, 0, size)
-
+	blocks := make(PEMChain, 0)
 	block, data := pem.Decode(data)
 	for block != nil {
 		result, err := parsePEMBlock(block)
 		if err != nil {
 			return nil, err
 		}
-		results = append(results, result)
+		blocks = append(blocks, result)
 		block, data = pem.Decode(data)
 	}
-
-	return results, nil
+	if len(blocks) == 0 {
+		return nil, fmt.Errorf("%w: expected pem", UnsupportedEncoding)
+	}
+	return blocks, nil
 }
 
 func EncodePEM(out io.Writer, data interface{}) error {

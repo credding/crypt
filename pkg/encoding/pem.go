@@ -45,7 +45,7 @@ func UnmarshalPEM(data []byte) (PEMChain, error) {
 		block, data = pem.Decode(data)
 	}
 	if len(blocks) == 0 {
-		return nil, fmt.Errorf("%w: expected pem", UnsupportedEncoding)
+		return nil, fmt.Errorf("expected pem: %w", UnsupportedEncoding)
 	}
 	return blocks, nil
 }

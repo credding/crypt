@@ -26,5 +26,5 @@ var rsaCommand = &cobra.Command{
 }
 
 func init() {
-	rsaCommand.Flags().IntVarP(&rsaBits, "bits", "b", 4096, "RSA bits")
+	rsaCommand.Flags().IntVarP(&rsaBits, "bits", "b", 2048, "RSA bits")
 }

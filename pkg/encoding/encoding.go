@@ -28,10 +28,12 @@ func (formats Encodings) Decode(in io.Reader) (interface{}, error) {
 func (formats Encodings) Unmarshal(data []byte) (interface{}, error) {
 	for _, format := range formats {
 		decoded, err := format.TryUnmarshal(data)
-		if err != nil && !errors.Is(err, UnsupportedEncoding) {
+		switch {
+		case errors.Is(err, UnsupportedEncoding):
+			continue
+		case err != nil:
 			return nil, err
-		}
-		if decoded != nil {
+		default:
 			return decoded, nil
 		}
 	}

@@ -88,8 +88,8 @@ func getKeyAlgorithm(alg string, key *jose.JSONWebKey) jose.KeyAlgorithm {
 	return defaultKeyAlgorithm(key)
 }
 
-func defaultKeyAlgorithm(key interface{}) jose.KeyAlgorithm {
-	switch key.(type) {
+func defaultKeyAlgorithm(key *jose.JSONWebKey) jose.KeyAlgorithm {
+	switch key.Key.(type) {
 	case *rsa.PublicKey:
 		return jose.RSA_OAEP
 	case *ecdsa.PublicKey:
